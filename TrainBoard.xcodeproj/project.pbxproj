@@ -45,6 +45,11 @@
 			path = TrainBoardUITests;
 			sourceTree = "<group>";
 		};
+		92454FD72F8C08C30082BB7A /* Root */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Root;
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,6 +80,7 @@
 		92454F9E2F8C070C0082BB7A = {
 			isa = PBXGroup;
 			children = (
+				92454FD72F8C08C30082BB7A /* Root */,
 				92454FA92F8C070C0082BB7A /* TrainBoard */,
 				92454FB72F8C070F0082BB7A /* TrainBoardTests */,
 				92454FC12F8C070F0082BB7A /* TrainBoardUITests */,
@@ -109,6 +115,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				92454FA92F8C070C0082BB7A /* TrainBoard */,
+				92454FD72F8C08C30082BB7A /* Root */,
 			);
 			name = TrainBoard;
 			packageProductDependencies = (
@@ -395,6 +402,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 89G23XZJ4V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -426,6 +434,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = 89G23XZJ4V;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;

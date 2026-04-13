@@ -9,9 +9,11 @@ import SwiftUI
 
 @main
 struct TrainBoardApp: App {
+    @State var ViewModel = TrainViewModel(service: FetchTrainService())
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(ViewModel)
         }
     }
 }
