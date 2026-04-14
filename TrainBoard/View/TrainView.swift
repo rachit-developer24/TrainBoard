@@ -72,6 +72,9 @@ struct TrainView: View {
                 .padding(.horizontal, 20)
                 .padding(.bottom, 10)
                 .onChange(of: searchText) { _, newValue in
+                    if newValue.isEmpty{
+                        viewModel.trains = nil
+                    }
                     guard !isSelectingSuggestion else { return }
                     viewModel.filterStations(input: newValue)
                 }
