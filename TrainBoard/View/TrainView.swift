@@ -6,12 +6,15 @@
 //
 
 import SwiftUI
-
+import SwiftData
 struct TrainView: View {
     @State private var searchText = ""
     @State private var isSelectingSuggestion = false
     @Environment(TrainViewModel.self) var viewModel
-
+    @Environment(\.modelContext)var context
+    @Query(sort:\RecentStation.searchedAt , order: .reverse)var recentStations:[RecentStation]
+    
+  
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
@@ -32,6 +35,11 @@ struct TrainView: View {
                             onSelect: { station in
                                 isSelectingSuggestion = true
                                 searchText = station.stationName
+                                let recent = RecentStation(stationName: station.stationName, crs: station.crs, searchedAt: Date())
+                               let result = recentStations.filter{$0.stationName == recent.stationName}
+                                if result.isEmpty{
+                                    context.insert(recent)
+                                }
                                 viewModel.filteredStations = []
 
                                 Task {
@@ -142,7 +150,7 @@ private extension TrainView {
 
                 Spacer()
 
-            } else {
+            } else if recentStations.isEmpty {
                 Spacer()
 
                 StatePanel(
@@ -165,6 +173,30 @@ private extension TrainView {
                             .onTapGesture {
                                 selectQuickCode("WAT")
                             }
+                    }
+                }
+
+                Spacer()
+            }else{
+                Spacer()
+
+                StatePanel(
+                    icon: "magnifyingglass",
+                    title: "Search departures",
+                    subtitle: "Enter a UK station code to view live train times"
+                ) {
+                    HStack(spacing: 8) {
+                        ForEach(recentStations){recentStation in
+                            QuickCodeChip(code: recentStation.stationName)
+                                .onTapGesture {
+                                    searchText = recentStation.stationName
+                                    Task{
+                                        await viewModel.fetchTrains(crs: recentStation.crs)
+                                    }
+                                }
+                            
+                            
+                        }
                     }
                 }
 
@@ -347,7 +379,6 @@ struct StatePanel<Content: View>: View {
 
 struct QuickCodeChip: View {
     let code: String
-
     var body: some View {
         Text(code)
             .font(.caption.bold())

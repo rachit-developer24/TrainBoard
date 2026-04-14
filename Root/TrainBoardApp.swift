@@ -6,7 +6,7 @@
 //
 
 import SwiftUI
-
+import SwiftData
 @main
 struct TrainBoardApp: App {
     @State var ViewModel = TrainViewModel(service: FetchTrainService())
@@ -14,6 +14,8 @@ struct TrainBoardApp: App {
         WindowGroup {
             ContentView()
                 .environment(ViewModel)
+                .modelContainer(for: RecentStation.self)
+                
         }
     }
 }
