@@ -13,8 +13,8 @@ struct TrainView: View {
     @Environment(TrainViewModel.self) var viewModel
     @Environment(\.modelContext)var context
     @Query(sort:\RecentStation.searchedAt , order: .reverse)var recentStations:[RecentStation]
+     @State var shouldDismissKeyboard:Bool = false
     
-  
     var body: some View {
         NavigationStack {
             ZStack(alignment: .bottom) {
@@ -41,7 +41,7 @@ struct TrainView: View {
                                     context.insert(recent)
                                 }
                                 viewModel.filteredStations = []
-
+                                shouldDismissKeyboard = true
                                 Task {
                                     await viewModel.fetchTrains(crs: station.crs)
                                     isSelectingSuggestion = false
@@ -57,7 +57,8 @@ struct TrainView: View {
             }
             .animation(.easeInOut(duration: 0.22), value: viewModel.filteredStations.isEmpty)
             .safeAreaInset(edge: .bottom) {
-                SearchBarDock(searchText: $searchText) {
+                
+                SearchBarDock(searchText: $searchText,shouldDismissKeyboard:$shouldDismissKeyboard) {
                     Task {
                         let cleanedCode = searchText
                             .trimmingCharacters(in: .whitespacesAndNewlines)
@@ -76,6 +77,12 @@ struct TrainView: View {
                 }
             }
             .navigationBarHidden(true)
+            .simultaneousGesture(
+                TapGesture().onEnded{
+                    shouldDismissKeyboard = true
+                }
+            )
+            
         }
     }
 }
@@ -106,7 +113,7 @@ private extension TrainView {
                     }
                     .padding(.horizontal, 20)
                     .padding(.bottom, 120)
-                }
+                }.scrollDismissesKeyboard(.interactively)
 
             } else if viewModel.isloading {
                 Spacer()
@@ -219,21 +226,27 @@ private extension TrainView {
 
 struct SearchBarDock: View {
     @Binding var searchText: String
+    @Binding var shouldDismissKeyboard:Bool
     var onSearch: () -> Void
-
+    @FocusState private var isFocused: Bool
+    
     var body: some View {
         HStack(spacing: 10) {
             Image(systemName: "magnifyingglass")
                 .foregroundStyle(.white.opacity(0.75))
 
             TextField("e.g. London Bridge or LBG", text: $searchText)
+                .focused($isFocused)
                 .foregroundStyle(.white)
                 .textInputAutocapitalization(.characters)
                 .disableAutocorrection(true)
                 .submitLabel(.search)
                 .onSubmit(onSearch)
 
-            Button(action: onSearch) {
+            Button {
+                onSearch()
+                self.isFocused = false
+            } label: {
                 Image(systemName: "arrow.right")
                     .font(.headline.weight(.bold))
                     .foregroundStyle(.black)
@@ -242,6 +255,12 @@ struct SearchBarDock: View {
                     .clipShape(Circle())
             }
             .buttonStyle(.plain)
+            .onChange(of: shouldDismissKeyboard) { oldValue, newValue in
+                if newValue{
+                    isFocused = false
+                    shouldDismissKeyboard = false
+                }
+            }
         }
         .padding(12)
         .background(.ultraThinMaterial)
