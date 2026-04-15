@@ -9,4 +9,5 @@ import Foundation
 
 protocol FetchTrainsProtocol{
     func fetchTrains(crs:String)async throws -> Train
+    func fetchTrainsForBothSide(fromCrs:String,toCrs:String)async throws ->Train
 }

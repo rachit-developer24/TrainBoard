@@ -11,14 +11,34 @@ import Observation
 class TrainViewModel{
     
     var trains:Train?
+    var arrivalandDestinationTrains:Train?
+    
     let service:FetchTrainsProtocol
     var isloading:Bool = false
     var trainError:String?
     var stations:[Station] = mockStations
     var filteredStations = [Station]()
     
+    var fromCrs = ""
+    var toCrs = ""
+    
+    
     init(service:FetchTrainsProtocol){
         self.service = service
+    }
+    
+    func fetchTrainsForBothSide(fromCrs:String,toCrs:String)async{
+        guard !fromCrs.isEmpty else{return}
+        guard !toCrs.isEmpty else{return}
+        isloading = true
+        defer{
+            isloading = false
+        }
+        do{
+            self.arrivalandDestinationTrains = try await service.fetchTrainsForBothSide(fromCrs: fromCrs, toCrs: toCrs)
+        }catch{
+            self.trainError = error.localizedDescription
+        }
     }
     
     func fetchTrains(crs:String)async{
