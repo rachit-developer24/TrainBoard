@@ -21,11 +21,13 @@ struct StationPickerSheet: View {
                 VStack{
                     TextField("Search a Station...", text:
                                 $searchText)
-                    .padding()
-                    .frame(maxWidth: .infinity)
-                    .frame( height: 60)
-                    .background(Color(.systemGray6))
-                    .clipShape(RoundedRectangle(cornerRadius: 12))
+                    .padding(12)
+                    .background(.ultraThinMaterial)
+                    .clipShape(RoundedRectangle(cornerRadius: 20))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 20)
+                            .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                    }
                     if stations.isEmpty{
                         if searchText.isEmpty{
                             StatePanel(

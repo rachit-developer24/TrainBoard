@@ -17,14 +17,25 @@ struct TrainView: View {
     @State private var selectedToStation: Station?
     @FocusState private var focusField:ActiveField?
     @State private var stationSearchQuery = ""
-    
     @Environment(TrainViewModel.self) var viewModel
     @Environment(\.modelContext) var context
     @Query(sort: \RecentStation.searchedAt, order: .reverse) var recentStations: [RecentStation]
-    
     @State var shouldDismissKeyboard: Bool = false
     @State private var activeField: ActiveField = .searchText
     @State private var activeSheet:ActiveField? = nil
+    private var pollingKey: String? {
+        if let oneSideTrain = viewModel.trains {
+            return oneSideTrain.crs
+        }
+        
+        if viewModel.arrivalandDestinationTrains != nil,
+           let from = selectedFromStation,
+           let to = selectedToStation {
+            return "\(from.crs) - \(to.crs) "
+        }
+        
+        return nil
+    }
     enum ActiveField:Identifiable {
         var id: Self{self}
         case searchText
@@ -135,6 +146,18 @@ struct TrainView: View {
                     }
                 }
             }
+            .task(id: pollingKey, {
+                guard pollingKey != nil else{return}
+                while !Task.isCancelled{
+                    try? await Task.sleep(for: .seconds(30))
+                    if let trains = viewModel.trains{
+                        await viewModel.fetchTrains(crs: trains.crs)
+                    }
+                    if let selectedFromStation, let selectedToStation{
+                        await viewModel.fetchTrainsForBothSide(fromCrs: selectedFromStation.crs, toCrs: selectedToStation.crs)
+                    }
+                }
+            })
             .overlay(alignment: .topTrailing, content: {
                 if viewModel.trains != nil || viewModel.arrivalandDestinationTrains != nil{
                     Button {
@@ -208,6 +231,7 @@ struct TrainView: View {
                 }
             )
         }
+      
     }
 }
 
