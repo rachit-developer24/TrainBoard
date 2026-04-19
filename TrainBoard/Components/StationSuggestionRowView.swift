@@ -9,6 +9,7 @@ import SwiftUI
 
 struct StationSuggestionRow: View {
     let station: Station
+
     var body: some View {
         HStack(spacing: 12) {
             ZStack {
@@ -44,5 +45,12 @@ struct StationSuggestionRow: View {
 }
 
 #Preview {
-  StationSuggestionRow(station: Station(stationName: "london Bridge", crs: "LDG"))
+    ZStack {
+        Color.black.ignoresSafeArea()
+
+        StationSuggestionRow(
+            station: Station(stationName: "London Bridge", crs: "LBG")
+        )
+        .padding()
+    }
 }

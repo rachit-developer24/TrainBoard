@@ -15,7 +15,7 @@ struct TrainBoardApp: App {
             ContentView()
                 .environment(ViewModel)
                 .modelContainer(for: RecentStation.self)
-                
+            
         }
     }
 }

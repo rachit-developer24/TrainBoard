@@ -9,6 +9,11 @@ import Foundation
 import Observation
 @Observable
 class TrainViewModel{
+   
+    enum FilterContext{
+        case search
+        case picker
+    }
     
     var trains:Train?
     var arrivalandDestinationTrains:Train?
@@ -18,7 +23,7 @@ class TrainViewModel{
     var trainError:String?
     var stations:[Station] = mockStations
     var filteredStations = [Station]()
-    
+    var filteredStationsForPicker = [Station]()
     var fromCrs = ""
     var toCrs = ""
     
@@ -54,18 +59,18 @@ class TrainViewModel{
         }
     }
     
-    func filterStations(input: String) {
-        guard !input.isEmpty else {
-            filteredStations = []
-            return
-        }
-
-        let filtered = stations.filter {
+    func filterStations(input: String,context:FilterContext) {
+        let filtered = input.isEmpty ? []:stations.filter {
             $0.stationName.localizedCaseInsensitiveContains(input) ||
             $0.crs.localizedCaseInsensitiveContains(input)
         }
-
-        filteredStations = filtered
+        switch context {
+        case .search:
+            filteredStations = filtered
+        case .picker:
+            filteredStationsForPicker = filtered
+        }
+        
     }
-
+    
 }

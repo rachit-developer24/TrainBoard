@@ -1,0 +1,13 @@
+# Secrets — never commit these
+Secrets.xcconfig
+
+# Xcode user-specific — not portable across machines
+xcuserdata/
+*.xcuserstate
+
+# macOS
+.DS_Store
+
+# Build artifacts
+build/
+DerivedData/

@@ -31,7 +31,6 @@ struct StatePanel<Content: View>: View {
             Text(subtitle)
                 .font(.caption)
                 .opacity(0.7)
-
             content
         }
         .foregroundStyle(.white)

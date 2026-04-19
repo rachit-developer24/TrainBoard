@@ -7,7 +7,6 @@
 
 import SwiftUI
 
-
 struct StationSuggestionsCard: View {
     let stations: [Station]
     let onSelect: (Station) -> Void
@@ -51,7 +50,20 @@ struct StationSuggestionsCard: View {
     }
 }
 
-
 #Preview {
-    StationSuggestionRow(station: Station(stationName: "Victoria", crs: "VIC"))
+    ZStack {
+        Color.black.ignoresSafeArea()
+
+        StationSuggestionsCard(
+            stations: [
+                Station(stationName: "London Bridge", crs: "LBG"),
+                Station(stationName: "Victoria", crs: "VIC"),
+                Station(stationName: "Waterloo", crs: "WAT")
+            ],
+            onSelect: { _ in }
+        )
+        .padding()
+    }
 }
+
+

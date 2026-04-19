@@ -8,8 +8,10 @@
 import Foundation
 
 class FetchTrainService:FetchTrainsProtocol{
+    private let token: String = Bundle.main.object(forInfoDictionaryKey: "HuxleyToken") as? String ?? ""
+    
     func fetchTrainsForBothSide(fromCrs: String, toCrs: String)async throws -> Train {
-        let urlString = "https://huxley2.azurewebsites.net/departures/\(fromCrs)/to/\(toCrs)?accessToken=d675d7dd-1379-4ef4-8c2b-90b917324ace"
+        let urlString = "https://huxley2.azurewebsites.net/departures/\(fromCrs)/to/\(toCrs)?accessToken=\(token)"
         guard let url = URL(string: urlString)else{throw TrainBoardErrors.invalidUrl}
         let (data,response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse else{throw TrainBoardErrors.invalidResponse}
@@ -20,7 +22,7 @@ class FetchTrainService:FetchTrainsProtocol{
     }
     
     func fetchTrains(crs: String) async throws -> Train {
-       let urlString = "https://huxley2.azurewebsites.net/departures/\(crs)?accessToken=d675d7dd-1379-4ef4-8c2b-90b917324ace"
+        let urlString = "https://huxley2.azurewebsites.net/departures/\(crs)?accessToken=\(token)"
         guard let url = URL(string: urlString)else{throw TrainBoardErrors.invalidUrl}
         let (data,response) = try await URLSession.shared.data(from: url)
         guard let response = response as? HTTPURLResponse else{throw TrainBoardErrors.invalidResponse}
@@ -28,6 +30,6 @@ class FetchTrainService:FetchTrainsProtocol{
         
         let train = try JSONDecoder().decode(Train.self, from: data)
         return train
-
+        
     }
 }

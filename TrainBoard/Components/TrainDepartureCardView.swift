@@ -11,14 +11,23 @@ struct TrainDepartureCard: View {
     let service: TrainServices
 
     private var statusText: String {
-        if service.isCancelled == true { return "Cancelled" }
-        let etd = service.etd?.trimmingCharacters(in: .whitespaces) ?? ""
+        if service.isCancelled == true {
+            return "Cancelled"
+        }
+
+        let etd = service.etd?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return etd.isEmpty ? "On time" : etd
     }
 
     private var statusColor: Color {
-        if service.isCancelled == true { return .red }
-        if statusText.lowercased() == "on time" { return .green }
+        if service.isCancelled == true {
+            return .red
+        }
+
+        if statusText.lowercased() == "on time" {
+            return .green
+        }
+
         return .orange
     }
 
@@ -27,13 +36,12 @@ struct TrainDepartureCard: View {
     }
 
     private var platform: String {
-        let value = service.platform?.trimmingCharacters(in: .whitespaces) ?? ""
+        let value = service.platform?.trimmingCharacters(in: .whitespacesAndNewlines) ?? ""
         return value.isEmpty ? "TBC" : value
     }
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-
             HStack {
                 Text(service.std)
                     .font(.title2.bold())
@@ -63,6 +71,26 @@ struct TrainDepartureCard: View {
         .clipShape(RoundedRectangle(cornerRadius: 20))
     }
 }
+
 #Preview {
-    TrainDepartureCard(service:TrainServices(std: "4.50", trainOperator: "THAMES LINK", origin: [], destination: []))
+    ZStack {
+        Color.black.ignoresSafeArea()
+
+        TrainDepartureCard(
+            service: TrainServices(
+                std: "14:30",
+                etd: "On time",
+                platform: "4",
+                trainOperator: "Thameslink",
+                isCancelled: false,
+                origin: [
+                    TrainLocation(locationName: "Bedford", crs: "BDM")
+                ],
+                destination: [
+                    TrainLocation(locationName: "London Bridge", crs: "LBG")
+                ]
+            )
+        )
+        .padding()
+    }
 }
