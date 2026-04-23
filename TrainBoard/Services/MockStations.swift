@@ -17,7 +17,8 @@ import Foundation
     Station(stationName: "Liverpool Street", crs: "LST"),
     Station(stationName: "Euston", crs: "EUS"),
     Station(stationName: "Clapham Junction", crs: "CLJ"),
-    Station(stationName: "Farringdon", crs: "ZFD")
+    Station(stationName: "Farringdon", crs: "ZFD"),
+    Station(stationName: "East Grinstead", crs: "EGR")
 ]
 
     
