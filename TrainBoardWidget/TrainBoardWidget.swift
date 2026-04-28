@@ -10,11 +10,21 @@ import SwiftUI
 
 struct Provider: AppIntentTimelineProvider {
     func placeholder(in context: Context) -> TrainEntry {
-        TrainEntry(date: Date(), fromStation: "East Grinstead", toStation: "London Victoria", departureTime: "14.27", status: "On time",platForm: "3", lastUpdated: Date(), errorMessage: nil, isEmpty: false)
+        TrainEntry(date: Date(), fromStation: "East Grinstead", toStation: "London Victoria", departureTime: "14:27", status: "On time",platForm: "3",lastUpdated: Calendar.current.date(
+            bySettingHour: 14,
+            minute: 20,
+            second: 0,
+            of: Date()
+        ) ?? Date(), errorMessage: nil, isEmpty: false)
     }
     
     func snapshot(for configuration: ConfigurationAppIntent, in context: Context) async -> TrainEntry {
-        TrainEntry(date: Date(), fromStation: "East Grinstead", toStation: "London Victoria", departureTime: "14.27", status: "On time",platForm: "3", lastUpdated: Date(), errorMessage: nil, isEmpty: false)
+        TrainEntry(date: Date(), fromStation: "East Grinstead", toStation: "London Victoria", departureTime: "14:27", status: "On time",platForm: "3", lastUpdated: Calendar.current.date(
+            bySettingHour: 14,
+            minute: 20,
+            second: 0,
+            of: Date()
+        ) ?? Date(), errorMessage: nil, isEmpty: false)
     }
     
     
@@ -110,7 +120,7 @@ struct Provider: AppIntentTimelineProvider {
                     ZStack {
                         VStack(spacing: 10) {
                             Image(systemName: "moon.zzz.fill")
-                                .font(.system(size: 18, weight: .semibold))
+                                .font(.system(size: 24, weight: .semibold))
                                 .foregroundStyle(.white.opacity(0.95))
 
                             Text("No more trains")
@@ -180,10 +190,10 @@ struct Provider: AppIntentTimelineProvider {
                                     .foregroundStyle(.white.opacity(0.7))
                                 
                                 Text(entry.toStation)
-                                    .font(.subheadline.weight(.semibold))
+                                    .font(.subheadline.weight(.bold))
                                     .foregroundStyle(.white.opacity(0.9))
                                     .lineLimit(1)
-                                    .minimumScaleFactor(0.7)
+                                    .minimumScaleFactor(0.6)
                             }
                         }
                         
@@ -233,6 +243,11 @@ struct Provider: AppIntentTimelineProvider {
     #Preview(as: .systemSmall) {
         TrainBoardWidget()
     } timeline: {
-        TrainEntry(date: Date(), fromStation: "East Grinstead", toStation: "London Victoria", departureTime: "14.27", status: "On time",platForm: "3", lastUpdated: Date(), errorMessage: nil,isEmpty: true)
+        TrainEntry(date: Date(), fromStation: "East Grinstead", toStation: "London Victoria", departureTime: "14:27", status: "On time",platForm: "3", lastUpdated: Calendar.current.date(
+            bySettingHour: 14,
+            minute: 20,
+            second: 0,
+            of: Date()
+        ) ?? Date(), errorMessage: nil,isEmpty: false)
     }
 

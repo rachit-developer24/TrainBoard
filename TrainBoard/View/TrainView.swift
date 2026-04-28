@@ -385,9 +385,8 @@ private extension TrainView {
                         VStack(alignment: .leading, spacing: 8) {
                             
                             if !recentStations.isEmpty {
-                                
                                 Text("Recent Searches")
-                                
+                                    .fontWeight(.bold)
                                     .foregroundStyle(.white.opacity(0.7))
                                 
                                 
@@ -444,13 +443,10 @@ private extension TrainView {
                             VStack(alignment: .leading, spacing: 8) {
                                 
                                 if !recentStations.isEmpty {
-                                    
                                     Text("Recent Searches")
-                                    
+                                        .frame(width: 360, height: 30)
+                                        .padding(.leading,120)
                                         .foregroundStyle(.white.opacity(0.7))
-                                    
-                                    
-                                    
                                     ScrollView(.horizontal, showsIndicators: false) {
                                         
                                         LazyHStack(spacing: 12) {
@@ -559,6 +555,7 @@ private extension TrainView {
                         Text("Recent Searches")
                             .fontWeight(.semibold)
                             .font(.title3)
+                            
                         ScrollView(.horizontal){
                             
                             LazyHStack(spacing: 8) {
