@@ -78,11 +78,13 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Model/Train.swift,
+				Model/TrainActivityAttributes.swift,
 				Model/TrainLocation.swift,
 				Model/TrainServices.swift,
 				Protocols/FetchTrainsProtocol.swift,
 				Services/FetchTrainService.swift,
 				Services/TrainBoardErrors.swift,
+				View/TrainBoardWidgetLiveActivityView.swift,
 			);
 			target = 92C2F1C12F965371003C74F2 /* TrainBoardWidgetExtension */;
 		};
